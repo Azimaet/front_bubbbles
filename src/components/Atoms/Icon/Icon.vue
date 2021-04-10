@@ -4,6 +4,7 @@
     :width="width"
     :height="height"
     viewBox="0 0 18 18"
+    preserveAspectRatio="xMinYMax meet"
     :aria-labelledby="iconName"
     role="presentation"
   >
@@ -37,3 +38,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+svg {
+  border: 1px solid red;
+}
+</style>
