@@ -71,7 +71,7 @@ export default {
       hydrogen.value,
     ];
 
-    function getLastGasEdited() {
+    function getcurrentGas() {
       if (lastGasValues[0] !== oxygen.value) {
         return "oxygen";
       } else if (lastGasValues[1] !== nitrogen.value) {
@@ -85,84 +85,67 @@ export default {
       }
     }
 
-    function equalizeGasFractions(lastGasEdit) {
-      let maxGasTotal = 100;
+    // function selectGasToDecrease(currentGas) {
+    //   https://masteringjs.io/tutorials/fundamentals/filter-object
+
+    //   let gasCandidates = {
+    //     oxygen: oxygen.value,
+    //     nitrogen: nitrogen.value,
+    //     helium: helium.value,
+    //     hydrogen: hydrogen.value,
+    //   };
+    //   const asArray = Object.entries(gasCandidates);
+
+    //   gasCandidates.filter((gas) => gas !== currentGas);
+    //   gasCandidates.sort(function(a, b) {
+    //     return a - b;
+    //   });
+
+    //   return gasCandidates[0];
+    // }
+
+    function equalizeGasFractions(currentGas) {
       let currentGasTotal =
         parseInt(oxygen.value) +
         parseInt(nitrogen.value) +
         parseInt(helium.value) +
         parseInt(hydrogen.value);
-      let toEqualize = currentGasTotal - maxGasTotal;
+      let toEqualize = currentGasTotal - 100;
 
       if (Math.sign(toEqualize) === 1) {
-        if (lastGasEdit !== "oxygen" && oxygen.value > 0) {
+        if (
+          currentGas !== "oxygen" &&
+          Math.sign(oxygen.value - toEqualize) === 1
+        ) {
           oxygen.value = oxygen.value - toEqualize;
-        } else if (lastGasEdit !== "nitrogen" && nitrogen.value > 0) {
+        } else if (
+          currentGas !== "nitrogen" &&
+          Math.sign(nitrogen.value - toEqualize) === 1
+        ) {
           nitrogen.value = nitrogen.value - toEqualize;
-        } else if (lastGasEdit !== "helium" && helium.value > 0) {
+        } else if (
+          currentGas !== "helium" &&
+          Math.sign(helium.value - toEqualize) === 1
+        ) {
           helium.value = helium.value - toEqualize;
-        } else if (lastGasEdit !== "hydrogen" && hydrogen.value > 0) {
+        } else if (
+          currentGas !== "hydrogen" &&
+          Math.sign(hydrogen.value - toEqualize) === 1
+        ) {
           hydrogen.value = hydrogen.value - toEqualize;
         }
       }
 
-      if (Math.sign(toEqualize) === -1) {
-        if (lastGasEdit !== "oxygen" && oxygen.value < 100) {
-          oxygen.value = oxygen.value - toEqualize;
-        } else if (lastGasEdit !== "nitrogen" && nitrogen.value < 100) {
-          nitrogen.value = nitrogen.value - toEqualize;
-        } else if (lastGasEdit !== "helium" && helium.value < 100) {
-          helium.value = helium.value - toEqualize;
-        } else if (lastGasEdit !== "hydrogen" && hydrogen.value < 100) {
-          hydrogen.value = hydrogen.value - toEqualize;
-        }
-      }
-
-      // Fix when user action is too loud
-
-      // if (Math.sign(oxygen.value) === -1) {
-      //   if (Math.abs(oxygen.value) === nitrogen.value) {
-      //     oxygen.value = 0;
-      //     nitrogen.value = 0;
-      //   } else if (Math.abs(oxygen.value) === helium.value) {
-      //     oxygen.value = 0;
-      //     helium.value = 0;
-      //   } else if (Math.abs(oxygen.value) === hydrogen.value) {
-      //     oxygen.value = 0;
-      //     hydrogen.value = 0;
-      //   }
-      // } else if (Math.sign(nitrogen.value) === -1) {
-      //   if (Math.abs(nitrogen.value) === oxygen.value) {
-      //     nitrogen.value = 0;
-      //     oxygen.value = 0;
-      //   } else if (Math.abs(nitrogen.value) === helium.value) {
-      //     nitrogen.value = 0;
-      //     helium.value = 0;
-      //   } else if (Math.abs(nitrogen.value) === hydrogen.value) {
-      //     nitrogen.value = 0;
-      //     hydrogen.value = 0;
-      //   }
-      // } else if (Math.sign(helium.value) === -1) {
-      //   if (Math.abs(helium.value) === oxygen.value) {
-      //     helium.value = 0;
-      //     oxygen.value = 0;
-      //   } else if (Math.abs(helium.value) === nitrogen.value) {
-      //     helium.value = 0;
-      //     nitrogen.value = 0;
-      //   } else if (Math.abs(helium.value) === hydrogen.value) {
-      //     helium.value = 0;
-      //     hydrogen.value = 0;
-      //   }
-      // } else if (Math.sign(hydrogen.value) === -1) {
-      //   if (Math.abs(hydrogen.value) === oxygen.value) {
-      //     hydrogen.value = 0;
-      //     oxygen.value = 0;
-      //   } else if (Math.abs(hydrogen.value) === nitrogen.value) {
-      //     hydrogen.value = 0;
-      //     nitrogen.value = 0;
-      //   } else if (Math.abs(hydrogen.value) === helium.value) {
-      //     hydrogen.value = 0;
-      //     helium.value = 0;
+      // If total < 100, add at other gas..
+      // if (Math.sign(toEqualize) === -1) {
+      //   if (lastGasEdit !== "oxygen" && oxygen.value < 100) {
+      //     oxygen.value = oxygen.value - toEqualize;
+      //   } else if (lastGasEdit !== "nitrogen" && nitrogen.value < 100) {
+      //     nitrogen.value = nitrogen.value - toEqualize;
+      //   } else if (lastGasEdit !== "helium" && helium.value < 100) {
+      //     helium.value = helium.value - toEqualize;
+      //   } else if (lastGasEdit !== "hydrogen" && hydrogen.value < 100) {
+      //     hydrogen.value = hydrogen.value - toEqualize;
       //   }
       // }
     }
@@ -197,8 +180,8 @@ export default {
     }
 
     watchEffect(() => {
-      let lastGasEdit = getLastGasEdited(lastGasValues);
-      equalizeGasFractions(lastGasEdit);
+      let currentGas = getcurrentGas(lastGasValues);
+      equalizeGasFractions(currentGas);
       gasLabel.value = getGasLabel();
 
       lastGasValues = [
