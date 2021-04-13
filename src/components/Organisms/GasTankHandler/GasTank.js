@@ -19,12 +19,10 @@ export class GasTank {
 
   /* Public Methods */
   setName() {
-    if (this.values[0] === 21 && this.values[1] === 79) {
-      console.log("Air");
-      this.name = "Air";
-    } else if ((this.values[0] = 100)) {
-      console.log("Oxygen");
+    if (this.values[0] === 100) {
       this.name = "Oxygen";
+    } else if (this.values[0] === 21 && this.values[1] === 79) {
+      this.name = "Air";
     } else if (
       this.values[0] > 21 &&
       this.values[0] < 100 &&
@@ -33,16 +31,42 @@ export class GasTank {
       this.values[2] === 0 &&
       this.values[3] === 0
     ) {
-      console.log("Nitrox");
       this.name = "Nitrox";
+    } else if (
+      this.values[0] > 0 &&
+      this.values[2] > 0 &&
+      this.values[1] === 0 &&
+      this.values[3] === 0
+    ) {
+      this.name = "Heliox";
+    } else if (
+      this.values[0] > 0 &&
+      this.values[3] > 0 &&
+      this.values[1] === 0 &&
+      this.values[2] === 0
+    ) {
+      this.name = "Hydrox";
+    } else if (
+      this.values[0] > 0 &&
+      this.values[2] > 0 &&
+      this.values[1] > 0 &&
+      this.values[3] === 0
+    ) {
+      this.name = "Trimix";
+    } else if (
+      this.values[0] > 0 &&
+      this.values[3] > 0 &&
+      this.values[2] > 0 &&
+      this.values[1] === 0
+    ) {
+      this.name = "Hydreliox";
     } else {
-      console.log("Unknown");
       this.name = "Unknown gaz";
     }
     return this.name;
   }
 
-  setValue(targetIndex, newValue) {
+  setValue(targetIndex, newValue, protectedGas) {
     if (targetIndex !== this.lastTargetIndex) {
       this.lastTargetIndex = targetIndex;
     }
@@ -55,22 +79,31 @@ export class GasTank {
       return this.values.slice();
     }
 
+    //this.values[targetIndex] is the new value choose by the user
     this.values[targetIndex] = nextValue;
 
     let deltaToDistribute = Math.abs(delta);
     let step = delta > 0 ? -1 : 1;
 
+    // Do decrease while sum is over 100
     while (deltaToDistribute) {
       if (++this.lastIncrementedIndex >= this.values.length) {
         this.lastIncrementedIndex = 0;
       }
 
+      console.log("this.lastIncrementedIndex " + this.lastIncrementedIndex);
+      console.log("this.lastTargetIndex " + this.lastTargetIndex);
+
       if (this.lastIncrementedIndex === this.lastTargetIndex) {
         continue;
       }
+      console.log("test");
+
       let currentValue = this.values[this.lastIncrementedIndex];
 
       nextValue = this.constrain(currentValue + step);
+
+      console.log(protectedGas);
       if (nextValue !== currentValue) {
         this.values[this.lastIncrementedIndex] = nextValue;
         deltaToDistribute--;

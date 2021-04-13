@@ -2,13 +2,13 @@
   <!-- <Icon width="50" height="200" icon-name="IconTank" viewBox="0 0 25 75">
     <IconTank />
   </Icon> -->
-  <p>{{ gasName }}</p>
-
   <div class="sliderset">
+    <p>{{ gasName }}</p>
     <div>
       <label for="oxygen">Oxygen</label>
       <input type="range" name="oxygen" min="0" max="100" v-model="oxygen" />
       <input type="text" name="oxygen" min="0" max="100" v-model="oxygen" />
+      <input type="checkbox" v-model="padlock" value="0" />
     </div>
     <div>
       <label for="nitrogen">Nitrogen</label>
@@ -20,11 +20,13 @@
         v-model="nitrogen"
       />
       <input type="text" name="nitrogen" min="0" max="100" v-model="nitrogen" />
+      <input type="checkbox" v-model="padlock" value="1" />
     </div>
     <div>
       <label for="helium">Helium</label>
       <input type="range" name="helium" min="0" max="100" v-model="helium" />
       <input type="text" name="helium" min="0" max="100" v-model="helium" />
+      <input type="checkbox" v-model="padlock" value="2" />
     </div>
     <div>
       <label for="hydrogen">Hydrogen</label>
@@ -36,6 +38,7 @@
         v-model="hydrogen"
       />
       <input type="text" name="hydrogen" min="0" max="100" v-model="hydrogen" />
+      <input type="checkbox" v-model="padlock" value="3" />
     </div>
   </div>
 </template>
@@ -52,7 +55,13 @@ export default {
     Icon,
     IconTank,
   },
-  setup() {
+  props: {
+    padlock: {
+      type: Array,
+      default: [],
+    },
+  },
+  setup(props) {
     const oxygen = ref("");
     const nitrogen = ref("");
     const helium = ref("");
@@ -66,46 +75,39 @@ export default {
     hydrogen.value = gasTank.values[3];
     gasName.value = gasTank.name;
 
-    watch(oxygen, (newVal) => {
-      gasTank.setValue(0, newVal);
+    function updateGazTank(index, newVals) {
+      let protectedGas = props.padlock.map(function(x) {
+        return parseInt(x, 10);
+      });
+
+      gasTank.setValue(index, newVals, protectedGas);
       [
         oxygen.value,
         nitrogen.value,
         helium.value,
         hydrogen.value,
       ] = gasTank.values;
-      // gasTank.setName();
+
+      gasTank.setName();
+      gasName.value = gasTank.name;
+    }
+
+    watch(oxygen, (newVals) => {
+      updateGazTank(0, newVals);
     });
-    watch(nitrogen, (newVal) => {
-      gasTank.setValue(1, newVal);
-      [
-        oxygen.value,
-        nitrogen.value,
-        helium.value,
-        hydrogen.value,
-      ] = gasTank.values;
-      // gasTank.setName();
+
+    watch(nitrogen, (newVals) => {
+      updateGazTank(1, newVals);
     });
-    watch(helium, (newVal) => {
-      gasTank.setValue(2, newVal);
-      [
-        oxygen.value,
-        nitrogen.value,
-        helium.value,
-        hydrogen.value,
-      ] = gasTank.values;
-      // gasTank.setName();
+
+    watch(helium, (newVals) => {
+      updateGazTank(2, newVals);
     });
-    watch(hydrogen, (newVal) => {
-      gasTank.setValue(3, newVal);
-      [
-        oxygen.value,
-        nitrogen.value,
-        helium.value,
-        hydrogen.value,
-      ] = gasTank.values;
-      // gasTank.setName();
+
+    watch(hydrogen, (newVals) => {
+      updateGazTank(3, newVals);
     });
+
     return { oxygen, nitrogen, helium, hydrogen, gasName };
   },
 };
