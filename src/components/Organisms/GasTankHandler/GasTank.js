@@ -91,19 +91,21 @@ export class GasTank {
         this.lastIncrementedIndex = 0;
       }
 
-      console.log("this.lastIncrementedIndex " + this.lastIncrementedIndex);
-      console.log("this.lastTargetIndex " + this.lastTargetIndex);
+      // console.log("this.lastIncrementedIndex " + this.lastIncrementedIndex);
+      // console.log("this.lastTargetIndex " + this.lastTargetIndex);
 
-      if (this.lastIncrementedIndex === this.lastTargetIndex) {
+      if (
+        this.lastIncrementedIndex === this.lastTargetIndex
+        /*||
+        protectedGas.includes(this.lastIncrementedIndex)*/
+      ) {
         continue;
       }
-      console.log("test");
 
       let currentValue = this.values[this.lastIncrementedIndex];
 
       nextValue = this.constrain(currentValue + step);
 
-      console.log(protectedGas);
       if (nextValue !== currentValue) {
         this.values[this.lastIncrementedIndex] = nextValue;
         deltaToDistribute--;
