@@ -6,9 +6,28 @@
     <p>{{ gasName }}</p>
     <div>
       <label for="oxygen">Oxygen</label>
-      <input type="range" name="oxygen" min="0" max="100" v-model="oxygen" />
-      <input type="text" name="oxygen" min="0" max="100" v-model="oxygen" />
-      <!-- <input type="checkbox" v-model="padlock" value="0" @change="toggleLock" /> -->
+      <input
+        type="range"
+        name="oxygen"
+        min="0"
+        max="100"
+        v-model="oxygen"
+        class="gas_slider-range"
+      />
+      <input
+        type="text"
+        name="oxygen"
+        min="0"
+        max="100"
+        v-model="oxygen"
+        class="gas_slider-text"
+      />
+      <input
+        type="checkbox"
+        v-model="padlock"
+        value="0"
+        @change="toggleLockGasAction"
+      />
     </div>
     <div>
       <label for="nitrogen">Nitrogen</label>
@@ -18,15 +37,47 @@
         min="0"
         max="100"
         v-model="nitrogen"
+        class="gas_slider-range"
       />
-      <input type="text" name="nitrogen" min="0" max="100" v-model="nitrogen" />
-      <!-- <input type="checkbox" v-model="padlock" value="1" @change="toggleLock" /> -->
+      <input
+        type="text"
+        name="nitrogen"
+        min="0"
+        max="100"
+        v-model="nitrogen"
+        class="gas_slider-text"
+      />
+      <input
+        type="checkbox"
+        v-model="padlock"
+        value="1"
+        @change="toggleLockGasAction"
+      />
     </div>
     <div>
       <label for="helium">Helium</label>
-      <input type="range" name="helium" min="0" max="100" v-model="helium" />
-      <input type="text" name="helium" min="0" max="100" v-model="helium" />
-      <!-- <input type="checkbox" v-model="padlock" value="2" @change="toggleLock" /> -->
+      <input
+        type="range"
+        name="helium"
+        min="0"
+        max="100"
+        v-model="helium"
+        class="gas_slider-range"
+      />
+      <input
+        type="text"
+        name="helium"
+        min="0"
+        max="100"
+        v-model="helium"
+        class="gas_slider-text"
+      />
+      <input
+        type="checkbox"
+        v-model="padlock"
+        value="2"
+        @change="toggleLockGasAction"
+      />
     </div>
     <div>
       <label for="hydrogen">Hydrogen</label>
@@ -36,9 +87,22 @@
         min="0"
         max="100"
         v-model="hydrogen"
+        class="gas_slider-range"
       />
-      <input type="text" name="hydrogen" min="0" max="100" v-model="hydrogen" />
-      <!-- <input type="checkbox" v-model="padlock" value="3" @change="toggleLock" /> -->
+      <input
+        type="text"
+        name="hydrogen"
+        min="0"
+        max="100"
+        v-model="hydrogen"
+        class="gas_slider-text"
+      />
+      <input
+        type="checkbox"
+        v-model="padlock"
+        value="3"
+        @change="toggleLockGasAction"
+      />
     </div>
   </div>
 </template>
@@ -62,12 +126,12 @@ export default {
     },
   },
   setup(props) {
+    const gasTank = new GasTank();
     const oxygen = ref("");
     const nitrogen = ref("");
     const helium = ref("");
     const hydrogen = ref("");
     const gasName = ref("");
-    const gasTank = new GasTank();
 
     oxygen.value = gasTank.values[0];
     nitrogen.value = gasTank.values[1];
@@ -82,43 +146,56 @@ export default {
       return arr;
     }
 
-    const toggleLock = () => {
+    const toggleLockGasAction = () => {
       let protectedGas = getProtectedGas();
-      console.log(protectedGas);
+      const ranges = document.querySelectorAll("input.gas_slider-range");
+      const texts = document.querySelectorAll("input.gas_slider-text");
+
+      for (const range of ranges) {
+        range.disabled = false;
+      }
+      for (const text of texts) {
+        text.disabled = false;
+      }
+
+      for (const i of protectedGas) {
+        ranges[i].disabled = true;
+        texts[i].disabled = true;
+      }
     };
 
-    function updateGazTank(index, newVals) {
+    function updateGazTank(index, newVal, oldVal) {
       let protectedGas = getProtectedGas();
+        gasTank.setValue(index, newVal, protectedGas);
 
-      gasTank.setValue(index, newVals, protectedGas);
-      [
-        oxygen.value,
-        nitrogen.value,
-        helium.value,
-        hydrogen.value,
-      ] = gasTank.values;
+        [
+          oxygen.value,
+          nitrogen.value,
+          helium.value,
+          hydrogen.value,
+        ] = gasTank.values;
 
-      gasTank.setName();
-      gasName.value = gasTank.name;
+        gasTank.setName();
+        gasName.value = gasTank.name;
     }
 
-    watch(oxygen, (newVals) => {
-      updateGazTank(0, newVals);
+    watch(oxygen, (newVal, oldVal) => {
+      updateGazTank(0, newVal, oldVal);
     });
 
-    watch(nitrogen, (newVals) => {
-      updateGazTank(1, newVals);
+    watch(nitrogen, (newVal, oldVal) => {
+      updateGazTank(1, newVal, oldVal);
     });
 
-    watch(helium, (newVals) => {
-      updateGazTank(2, newVals);
+    watch(helium, (newVal, oldVal) => {
+      updateGazTank(2, newVal, oldVal);
     });
 
-    watch(hydrogen, (newVals) => {
-      updateGazTank(3, newVals);
+    watch(hydrogen, (newVal, oldVal) => {
+      updateGazTank(3, newVal, oldVal);
     });
 
-    return { oxygen, nitrogen, helium, hydrogen, gasName, toggleLock };
+    return { oxygen, nitrogen, helium, hydrogen, gasName, toggleLockGasAction };
   },
 };
 </script>
