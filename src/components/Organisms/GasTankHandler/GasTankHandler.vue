@@ -63,6 +63,7 @@
         max="100"
         v-model="helium"
         class="gas_slider-range"
+        disabled
       />
       <input
         type="text"
@@ -71,6 +72,7 @@
         max="100"
         v-model="helium"
         class="gas_slider-text"
+        disabled
       />
       <input
         type="checkbox"
@@ -88,6 +90,7 @@
         max="100"
         v-model="hydrogen"
         class="gas_slider-range"
+        disabled
       />
       <input
         type="text"
@@ -96,6 +99,7 @@
         max="100"
         v-model="hydrogen"
         class="gas_slider-text"
+        disabled
       />
       <input
         type="checkbox"
@@ -103,6 +107,10 @@
         value="3"
         @change="toggleLockGasAction"
       />
+    </div>
+
+    <div>
+      <p>Maximum Operating Depth: {{ maxOperatingDepth }}m.</p>
     </div>
   </div>
 </template>
@@ -122,7 +130,7 @@ export default {
   props: {
     padlock: {
       type: Array,
-      default: [],
+      default: ["2", "3"],
     },
   },
   setup(props) {
@@ -132,12 +140,14 @@ export default {
     const helium = ref("");
     const hydrogen = ref("");
     const gasName = ref("");
+    const maxOperatingDepth = ref("");
 
     oxygen.value = gasTank.values[0];
     nitrogen.value = gasTank.values[1];
     helium.value = gasTank.values[2];
     hydrogen.value = gasTank.values[3];
     gasName.value = gasTank.name;
+    maxOperatingDepth.value = gasTank.maxOperatingDepth;
 
     function getProtectedGas() {
       let arr = props.padlock.map(function(x) {
@@ -166,17 +176,19 @@ export default {
 
     function updateGazTank(index, newVal, oldVal) {
       let protectedGas = getProtectedGas();
-        gasTank.setValue(index, newVal, protectedGas);
+      gasTank.setValue(index, newVal, protectedGas);
 
-        [
-          oxygen.value,
-          nitrogen.value,
-          helium.value,
-          hydrogen.value,
-        ] = gasTank.values;
+      [
+        oxygen.value,
+        nitrogen.value,
+        helium.value,
+        hydrogen.value,
+      ] = gasTank.values;
 
-        gasTank.setName();
-        gasName.value = gasTank.name;
+      gasTank.setName();
+      gasTank.setDepth();
+      gasName.value = gasTank.name;
+      maxOperatingDepth.value = gasTank.maxOperatingDepth;
     }
 
     watch(oxygen, (newVal, oldVal) => {
@@ -195,7 +207,15 @@ export default {
       updateGazTank(3, newVal, oldVal);
     });
 
-    return { oxygen, nitrogen, helium, hydrogen, gasName, toggleLockGasAction };
+    return {
+      oxygen,
+      nitrogen,
+      helium,
+      hydrogen,
+      gasName,
+      maxOperatingDepth,
+      toggleLockGasAction,
+    };
   },
 };
 </script>
