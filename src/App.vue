@@ -10,6 +10,7 @@
 import HelloWorld from "./components/HelloWorld.vue";
 import Icon from "./components/Atoms/Icon/Icon.vue";
 import IconTank from "./components/Atoms/Icon/icons/IconTank.vue";
+import reset from "./assets/css/reset.css";
 
 export default {
   name: "App",
@@ -17,6 +18,7 @@ export default {
     HelloWorld,
     Icon,
     IconTank,
+    reset,
   },
 };
 </script>

@@ -1,9 +1,11 @@
 import GasTankHandler from "./GasTankHandler.vue";
+import reset from "./../../../assets/css/reset.css";
 
 export default {
   title: "Organisms/GasTankHandler",
   component: {
     GasTankHandler,
+    reset,
   },
 };
 
