@@ -3,22 +3,20 @@
   <Icon>
     <IconTank />
   </Icon>
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <GasTankHandler />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import GasTankHandler from "./components/Molecules/GasTankHandler/GasTankHandler.vue";
 import Icon from "./components/Atoms/Icon/Icon.vue";
 import IconTank from "./components/Atoms/Icon/icons/IconTank.vue";
-import reset from "./assets/css/reset.css";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    GasTankHandler,
     Icon,
     IconTank,
-    reset,
   },
 };
 </script>

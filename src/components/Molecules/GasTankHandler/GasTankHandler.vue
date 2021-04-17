@@ -1,7 +1,4 @@
 <template>
-  <!-- <Icon width="50" height="200" icon-name="IconTank" viewBox="0 0 25 75">
-    <IconTank />
-  </Icon> -->
   <div class="sliderset">
     <p>{{ gasName }}</p>
     <div class="sliderset_gas-container">
@@ -109,23 +106,12 @@
 
 <script>
 import { ref, watch } from "vue";
-import Icon from "../../Atoms/Icon/Icon.vue";
-import IconTank from "../../Atoms/Icon/icons/IconTank.vue";
 import { GasTank } from "./GasTank.js";
 
 export default {
   name: "GasTankHandler",
-  components: {
-    Icon,
-    IconTank,
-  },
-  props: {
-    padlock: {
-      type: Array,
-      default: ["2", "3"],
-    },
-  },
-  setup(props) {
+
+  setup() {
     const gasTank = new GasTank();
     const oxygen = ref("");
     const nitrogen = ref("");
@@ -133,6 +119,7 @@ export default {
     const hydrogen = ref("");
     const gasName = ref("");
     const maxOperatingDepth = ref("");
+    const padlock = ref("");
 
     oxygen.value = gasTank.values[0];
     nitrogen.value = gasTank.values[1];
@@ -140,9 +127,10 @@ export default {
     hydrogen.value = gasTank.values[3];
     gasName.value = gasTank.name;
     maxOperatingDepth.value = gasTank.maxOperatingDepth;
+    padlock.value = ["2", "3"];
 
     function getProtectedGas(lastLockAction) {
-      let arr = props.padlock;
+      let arr = padlock.value;
       if (lastLockAction) {
         let pos = arr[lastLockAction];
         while (arr.length > 2) {
@@ -157,9 +145,11 @@ export default {
           }
         }
       }
+      padlock.value = arr;
       arr = arr.map(function(x) {
         return parseInt(x, 10);
       });
+
       return arr;
     }
 
@@ -186,7 +176,7 @@ export default {
       }
     };
 
-    function updateGazTank(index, newVal, oldVal) {
+    function updateGazTank(index, newVal) {
       let protectedGas = getProtectedGas();
       gasTank.setValue(index, newVal, protectedGas);
 
@@ -227,6 +217,7 @@ export default {
       gasName,
       maxOperatingDepth,
       toggleLockGasAction,
+      padlock,
     };
   },
 };
