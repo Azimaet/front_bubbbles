@@ -38,14 +38,13 @@
 </template>
 
 <script>
-import { Dive } from "./Dive.js";
 import GasTankHandler from "../../Molecules/GasTankHandler/GasTankHandler.vue";
+
 export default {
   name: "DiveForm",
   components: {
     GasTankHandler,
   },
-  data: {},
 };
 </script>
 

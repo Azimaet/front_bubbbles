@@ -4,6 +4,7 @@
     <IconTank />
   </Icon>
   <DiveForm />
+  {{ data }}
 </template>
 
 <script>
@@ -17,6 +18,12 @@ export default {
     DiveForm,
     Icon,
     IconTank,
+  },
+
+  data() {
+    return {
+      data: this.$store.state.name,
+    };
   },
 };
 </script>
