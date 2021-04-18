@@ -112,12 +112,10 @@ export class GasTank {
     });
 
     if (Math.sign(delta) === 1 && bank === 0) {
-      console.log("bug");
       return this.values.slice();
     }
 
     if (Math.sign(delta) === 1 && delta > bank) {
-      console.log("bug");
       return this.values.slice();
     }
 

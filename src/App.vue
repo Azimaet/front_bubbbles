@@ -3,18 +3,18 @@
   <Icon>
     <IconTank />
   </Icon>
-  <GasTankHandler />
+  <DiveForm />
 </template>
 
 <script>
-import GasTankHandler from "./components/Molecules/GasTankHandler/GasTankHandler.vue";
+import DiveForm from "./components/Organisms/DiveForm/DiveForm.vue";
 import Icon from "./components/Atoms/Icon/Icon.vue";
 import IconTank from "./components/Atoms/Icon/icons/IconTank.vue";
 
 export default {
   name: "App",
   components: {
-    GasTankHandler,
+    DiveForm,
     Icon,
     IconTank,
   },

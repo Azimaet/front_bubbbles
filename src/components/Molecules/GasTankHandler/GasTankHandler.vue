@@ -1,5 +1,5 @@
 <template>
-  <div class="sliderset">
+  <div id="sliderset">
     <p>{{ gasName }}</p>
     <div class="sliderset_gas-container">
       <label for="oxygen">Oxygen</label>
@@ -131,6 +131,10 @@ export default {
 
     function getProtectedGas(lastLockAction) {
       let arr = padlock.value;
+      arr = arr.map(function(x) {
+        return parseInt(x, 10);
+      });
+      arr.sort;
       if (lastLockAction) {
         let pos = arr[lastLockAction];
         while (arr.length > 2) {
@@ -145,19 +149,16 @@ export default {
           }
         }
       }
-      padlock.value = arr;
-      arr = arr.map(function(x) {
-        return parseInt(x, 10);
-      });
-
+      // TODO: resolve issue when you arrives in oxygen + hydrogen padlock checked
       return arr;
     }
 
     const toggleLockGasAction = (event) => {
       let protectedGas = getProtectedGas(event.target.value);
-      const ranges = document.querySelectorAll("input[type='range']");
-      const texts = document.querySelectorAll("input[type='text']");
-      const checkboxs = document.querySelectorAll("input[type='checkbox']");
+      let container = document.getElementById("sliderset");
+      const ranges = container.querySelectorAll("input[type='range']");
+      const texts = container.querySelectorAll("input[type='text']");
+      const checkboxs = container.querySelectorAll("input[type='checkbox']");
 
       for (const checkbox of checkboxs) {
         checkbox.checked = false;
@@ -174,6 +175,8 @@ export default {
         texts[i].disabled = true;
         checkboxs[i].checked = true;
       }
+
+      padlock.value = protectedGas;
     };
 
     function updateGazTank(index, newVal) {
@@ -225,7 +228,7 @@ export default {
 
 <style scoped>
 /* Generals */
-.sliderset {
+#sliderset {
   width: 600px;
 }
 

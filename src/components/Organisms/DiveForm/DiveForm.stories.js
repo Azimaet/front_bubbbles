@@ -1,11 +1,13 @@
 import DiveForm from "./DiveForm.vue";
 import reset from "./../../../assets/css/reset.css";
+import colors from "./../../../assets/css/colors.css";
 
 export default {
   title: "Organisms/DiveForm",
   component: {
     DiveForm,
     reset,
+    colors,
   },
 };
 

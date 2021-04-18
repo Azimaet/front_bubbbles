@@ -1,0 +1,25 @@
+.bg-darkblue {
+  background-color: #030d21;
+}
+.bg-marineblue {
+  background-color: #1d2d50;
+}
+.bg-blue {
+  background-color: #133b5c;
+}
+.bg-skyblue {
+  background-color: #1e5f74;
+}
+.bg-skin {
+  background-color: #fcdab7;
+}
+.bg-lightskin {
+  background-color: #ffecd8;
+}
+
+.c-white {
+  color: white;
+}
+.c-black {
+  color: black;
+}
