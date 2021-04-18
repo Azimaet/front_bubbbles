@@ -3,26 +3,25 @@
   <Icon>
     <IconTank />
   </Icon>
-  <DiveForm />
-  {{ data }}
+  <DivesList />
 </template>
 
 <script>
-import DiveForm from "./components/Organisms/DiveForm/DiveForm.vue";
+import DivesList from "./components/Organisms/DivesList/DivesList.vue";
 import Icon from "./components/Atoms/Icon/Icon.vue";
 import IconTank from "./components/Atoms/Icon/icons/IconTank.vue";
 
 export default {
   name: "App",
   components: {
-    DiveForm,
+    DivesList,
     Icon,
     IconTank,
   },
 
   data() {
     return {
-      data: this.$store.state.name,
+      store: this.$store,
     };
   },
 };

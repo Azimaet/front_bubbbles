@@ -1,6 +1,6 @@
 <template>
   <form action="#" class="">
-    <h2>Add a Dive!</h2>
+    <h3>Add a Dive!</h3>
 
     <label for="dive-date">Date:</label>
     <input type="datetime-local" name="dive-date" value="2018-06-12T19:30" />
