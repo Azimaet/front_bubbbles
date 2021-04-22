@@ -21,6 +21,8 @@ export class GasTank {
     this.ppO2 = 1.4;
 
     this.maxOperatingDepth = 56.6;
+
+    console.log("");
   }
 
   /* Public Methods */

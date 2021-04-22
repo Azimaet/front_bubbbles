@@ -18,12 +18,6 @@ export default {
     Icon,
     IconTank,
   },
-
-  data() {
-    return {
-      store: this.$store,
-    };
-  },
 };
 </script>
 

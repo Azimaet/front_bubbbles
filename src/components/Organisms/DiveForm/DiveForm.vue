@@ -3,7 +3,11 @@
     <h3>Add a Dive!</h3>
 
     <label for="dive-date">Date:</label>
-    <input type="datetime-local" name="dive-date" value="2018-06-12T19:30" />
+    <input
+      type="datetime-local"
+      name="dive-date"
+      :value="dive.date ? dive.date : timestamp"
+    />
 
     <label for="max_depth">Total time: (mn)</label>
     <input type="number" name="total-time" required />
@@ -31,7 +35,11 @@
       <option value="Solo"> </option>
     </datalist>
 
-    <GasTankHandler />
+    <GasTankHandler
+      v-for="(gastank, index) in dive.gazs"
+      :key="index"
+      :is="gastank"
+    />
 
     <input type="submit" value="Submit" />
   </form>
@@ -44,6 +52,34 @@ export default {
   name: "DiveForm",
   components: {
     GasTankHandler,
+  },
+  props: {
+    dive: {
+      type: Object,
+    },
+  },
+  methods: {
+    getNow: function() {
+      const today = new Date();
+      const date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      const time =
+        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      const dateTime = date + " " + time;
+      this.timestamp = dateTime;
+    },
+  },
+  data() {
+    return {
+      timestamp: "",
+    };
+  },
+  created() {
+    setInterval(this.getNow, 1000);
   },
 };
 </script>
