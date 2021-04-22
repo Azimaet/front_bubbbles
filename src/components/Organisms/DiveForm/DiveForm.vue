@@ -9,14 +9,29 @@
       :value="dive.date ? dive.date : timestamp"
     />
 
-    <label for="max_depth">Total time: (mn)</label>
-    <input type="number" name="total-time" required />
+    <label for="total-time">Total time: (mn)</label>
+    <input
+      type="number"
+      name="total-time"
+      :value="dive.totalTime ? dive.totalTime : 40"
+      required
+    />
 
-    <label for="max_depth">Max depth: </label>
-    <input type="number" name="max-depth" required />
+    <label for="max-depth">Max depth: </label>
+    <input
+      type="number"
+      name="max-depth"
+      :value="dive.maxDepth ? dive.maxDepth : 18"
+      required
+    />
 
     <label for="temperature">Temperature: </label>
-    <input type="text" name="temperature" />
+    <input
+      type="text"
+      name="temperature"
+      :value="dive.temperature ? dive.temperature : 20"
+      required
+    />
 
     <input list="environment" placeholder="Select environment diving" />
     <datalist id="environment">
@@ -58,28 +73,12 @@ export default {
       type: Object,
     },
   },
-  methods: {
-    getNow: function() {
-      const today = new Date();
-      const date =
-        today.getFullYear() +
-        "-" +
-        (today.getMonth() + 1) +
-        "-" +
-        today.getDate();
-      const time =
-        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      const dateTime = date + " " + time;
-      this.timestamp = dateTime;
-    },
-  },
-  data() {
+  setup() {
+    const timestamp = new Date().toISOString();
+
     return {
-      timestamp: "",
+      timestamp,
     };
-  },
-  created() {
-    setInterval(this.getNow, 1000);
   },
 };
 </script>
