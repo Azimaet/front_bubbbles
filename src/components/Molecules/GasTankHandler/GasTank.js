@@ -3,14 +3,19 @@
  ** https://github.com/bennadel/JavaScript-Demos/blob/master/demos/linked-sliders-angular9/src/app/equalizer.ts
  */
 export class GasTank {
-  constructor() {
-    this.name = "Air";
+  constructor(tankInDatabase) {
+    this.name = tankInDatabase.name ? tankInDatabase.name : "Air";
 
     this.minimum = 0;
 
     this.maximum = 100;
 
-    this.values = [21, 79, 0, 0];
+    this.values = [
+      tankInDatabase.oxygen ? tankInDatabase.oxygen : 21,
+      tankInDatabase.nitrogen ? tankInDatabase.nitrogen : 79,
+      tankInDatabase.helium ? tankInDatabase.helium : 0,
+      tankInDatabase.hydrogen ? tankInDatabase.hydrogen : 0,
+    ];
 
     this.lastIncrementedIndex = -1;
 
@@ -20,9 +25,13 @@ export class GasTank {
 
     this.ppO2 = 1.4;
 
-    this.maxOperatingDepth = 56.6;
+    this.startPressure = tankInDatabase.startPressure
+      ? tankInDatabase.startPressure
+      : 200;
 
-    console.log("");
+    this.endPressure = tankInDatabase.endPressure
+      ? tankInDatabase.endPressure
+      : 50;
   }
 
   /* Public Methods */
@@ -31,16 +40,16 @@ export class GasTank {
       this.name = "Oxygen";
       this.breathable = true;
     } else if (this.values[1] === 100) {
-      this.name = "Nitrogen";
+      this.name = "Unbreathable Gas";
       this.breathable = false;
     } else if (this.values[2] === 100) {
-      this.name = "Helium";
+      this.name = "Unbreathable Gas";
       this.breathable = false;
     } else if (this.values[3] === 100) {
-      this.name = "Hydrogen";
+      this.name = "Unbreathable Gas";
       this.breathable = false;
     } else if (this.values[1] === 100) {
-      this.name = "Nitrogen";
+      this.name = "Unbreathable Gas";
       this.breathable = false;
     } else if (this.values[0] === 21 && this.values[1] === 79) {
       this.name = "Air";
@@ -88,7 +97,7 @@ export class GasTank {
       this.name = "Hydreliox";
       this.breathable = true;
     } else {
-      this.name = "Unknown gaz";
+      this.name = "Unbreathable Gas";
       this.breathable = false;
     }
     return this.name;

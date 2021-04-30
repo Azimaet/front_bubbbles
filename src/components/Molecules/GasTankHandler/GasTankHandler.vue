@@ -1,5 +1,11 @@
 <template>
   <div id="sliderset">
+    <label for="startPressure">Start Tank Pressure</label>
+    <input type="number" name="startPressure" v-model="startPressure" />
+
+    <label for="endPressure">End Tank Pressure</label>
+    <input type="number" name="endPressure" v-model="endPressure" />
+
     <p>{{ gasName }}</p>
     <div class="sliderset_gas-container">
       <label for="oxygen">Oxygen</label>
@@ -110,9 +116,16 @@ import { GasTank } from "./GasTank.js";
 
 export default {
   name: "GasTankHandler",
+  props: {
+    tankInDatabase: {
+      type: Object,
+    },
+  },
 
-  setup() {
-    const gasTank = new GasTank();
+  setup(props) {
+    const gasTank = new GasTank(props.tankInDatabase);
+    const startPressure = ref("");
+    const endPressure = ref("");
     const oxygen = ref("");
     const nitrogen = ref("");
     const helium = ref("");
@@ -121,6 +134,8 @@ export default {
     const maxOperatingDepth = ref("");
     const padlock = ref("");
 
+    startPressure.value = gasTank.startPressure;
+    endPressure.value = gasTank.endPressure;
     oxygen.value = gasTank.values[0];
     nitrogen.value = gasTank.values[1];
     helium.value = gasTank.values[2];
@@ -194,6 +209,8 @@ export default {
       gasTank.setDepth();
       gasName.value = gasTank.name;
       maxOperatingDepth.value = gasTank.maxOperatingDepth;
+      startPressure.value = gasTank.startPressure;
+      endPressure.value = gasTank.endPressure;
     }
 
     watch(oxygen, (newVal, oldVal) => {
@@ -213,6 +230,8 @@ export default {
     });
 
     return {
+      startPressure,
+      endPressure,
       oxygen,
       nitrogen,
       helium,

@@ -30,7 +30,7 @@ const store = createStore({
           {
             name: "Nitrox",
             startPressure: 200,
-            endPressure: 60,
+            endPressure: 40,
             oxygen: 36,
             nitrogen: 64,
             helium: 0,

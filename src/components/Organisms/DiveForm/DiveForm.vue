@@ -10,28 +10,13 @@
     />
 
     <label for="total-time">Total time: (mn)</label>
-    <input
-      type="number"
-      name="total-time"
-      :value="dive.totalTime ? dive.totalTime : 40"
-      required
-    />
+    <input type="number" name="total-time" :value="dive.totalTime" required />
 
     <label for="max-depth">Max depth: </label>
-    <input
-      type="number"
-      name="max-depth"
-      :value="dive.maxDepth ? dive.maxDepth : 18"
-      required
-    />
+    <input type="number" name="max-depth" :value="dive.maxDepth" required />
 
     <label for="temperature">Temperature: </label>
-    <input
-      type="text"
-      name="temperature"
-      :value="dive.temperature ? dive.temperature : 20"
-      required
-    />
+    <input type="text" name="temperature" :value="dive.temperature" required />
 
     <input list="environment" placeholder="Select environment diving" />
     <datalist id="environment">
@@ -51,12 +36,11 @@
     </datalist>
 
     <GasTankHandler
-      v-for="(gastank, index) in dive.gazs"
+      v-for="(tank, index) in dive.gazs"
       :key="index"
-      :is="gastank"
+      :is="tank"
+      :tankInDatabase="tank"
     />
-
-    <input type="submit" value="Submit" />
   </form>
 </template>
 
